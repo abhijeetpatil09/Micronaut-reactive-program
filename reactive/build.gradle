@@ -1,0 +1,61 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.6.3"
+}
+
+version = "0.1"
+group = "com.reactive"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation 'io.micronaut.data:micronaut-data-model:3.8.0'
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    implementation("io.micronaut:micronaut-validation")
+    implementation("org.modelmapper:modelmapper:3.1.0")
+
+//aerospike
+    implementation group: 'com.aerospike', name: 'java-object-mapper', version: '2.1.0'
+    implementation group: 'com.aerospike', name: 'aerospike-client', version: '6.1.4'
+    implementation("io.micronaut.data:micronaut-data-r2dbc")
+
+//reactive-programming
+    implementation("io.projectreactor:reactor-core:3.4.24")
+    implementation("io.micronaut.reactor:micronaut-reactor-http-client")
+    implementation 'com.aerospike:aerospike-reactor-client:6.1.2'
+    testImplementation group: 'io.projectreactor', name: 'reactor-test', version: '3.5.0'
+
+
+    // https://mvnrepository.com/artifact/org.mockito/mockito-core
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.9.0'
+
+
+}
+
+
+application {
+    mainClass.set("com.reactive.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.reactive.*")
+    }
+}
+
+
+
